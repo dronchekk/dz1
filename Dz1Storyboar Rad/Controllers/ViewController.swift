@@ -32,7 +32,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-       
+        let session = Session.instance
+        session.token = "22b3996a3f1f05f742e64f4a1b3e8810a9c13fdcf7c5eb9a05b25bc9218e12c87918f55d69cd87f7a08a8"
+        session.userId = 1
 
 
         let gradientLayer = CAGradientLayer()
@@ -60,7 +62,6 @@ class ViewController: UIViewController {
         addShadow(view: loginTextField)
         addShadow(view: passwordTextField)
         addShadow(view: loginButton)
-
         loginButton.layer.cornerRadius = 10
 
     }
@@ -80,7 +81,8 @@ class ViewController: UIViewController {
             print("login success")
             loginTextField.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
             passwordTextField.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
-            
+            let session = Session.instance
+            session.userlogin = loginTextField.text ?? ""
             performSegue(withIdentifier: "toGreenSegue", sender: nil)
         }
         else {

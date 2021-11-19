@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "png-transparent-font-awesome-computer-icons-facebook-inc-font-face-siluet-rectangle-logo-blog.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

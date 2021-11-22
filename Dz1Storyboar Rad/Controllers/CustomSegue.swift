@@ -24,10 +24,10 @@ class CustomSegue: UIStoryboardSegue {
         destinationView.frame = CGRect(x: source.view.frame.width / 2, y: source.view.frame.height / 2, width: 0, height: 0)
 
 
-        sourceController.loginViaFacebook.isHidden = true
-        sourceController.facebookLogoImage.isHidden = true
-        sourceController.vKLogoImage.isHidden = true
-        sourceController.forgetPasswordButton.isHidden = true
+//        sourceController.loginViaFacebook.isHidden = true
+//        sourceController.facebookLogoImage.isHidden = true
+//        sourceController.vKLogoImage.isHidden = true
+//        sourceController.forgetPasswordButton.isHidden = true
 //        destinationView.clearsContextBeforeDrawing = true
 
         UIView.animate(withDuration: 0.01) {[weak self] in

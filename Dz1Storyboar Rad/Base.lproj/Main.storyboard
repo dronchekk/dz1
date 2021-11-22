@@ -87,6 +87,14 @@
                                     <constraint firstAttribute="height" constant="20" id="xtK-Rg-CCy"/>
                                 </constraints>
                             </imageView>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Iv-MQ-XOz">
+                                <rect key="frame" x="0.0" y="180" width="414" height="253"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.27559732489253319" green="0.37001037197075942" blue="0.57351401417525771" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -99,8 +107,12 @@
                             <constraint firstItem="xnz-eV-PkV" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Nv5-Eg-9DY"/>
                             <constraint firstItem="Y0N-p0-zHE" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="PRs-8c-kaB"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="17e-2L-7Ss" secondAttribute="trailing" constant="24" id="RSB-6A-JsJ"/>
+                            <constraint firstItem="9Iv-MQ-XOz" firstAttribute="top" secondItem="xnz-eV-PkV" secondAttribute="bottom" id="UTd-Xs-ijq"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="9Iv-MQ-XOz" secondAttribute="trailing" id="XTd-8f-pLW"/>
+                            <constraint firstItem="9Iv-MQ-XOz" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="agG-0N-mPr"/>
                             <constraint firstItem="YC1-4I-awM" firstAttribute="firstBaseline" secondItem="Y0N-p0-zHE" secondAttribute="baseline" constant="56" id="b40-wX-gkc"/>
                             <constraint firstItem="yZy-8k-ojZ" firstAttribute="centerX" secondItem="YC1-4I-awM" secondAttribute="centerX" id="bhn-Y7-71m"/>
+                            <constraint firstItem="17e-2L-7Ss" firstAttribute="top" secondItem="9Iv-MQ-XOz" secondAttribute="bottom" id="cTa-eq-hpd"/>
                             <constraint firstItem="17e-2L-7Ss" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="cYo-MM-39o"/>
                             <constraint firstItem="pId-b2-k1v" firstAttribute="centerY" secondItem="1H0-EK-ckF" secondAttribute="centerY" id="cpE-h7-pDP"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="1H0-EK-ckF" secondAttribute="bottom" constant="16" id="crO-m8-QqM"/>
@@ -113,13 +125,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="facebookLogoImage" destination="pId-b2-k1v" id="bwt-MP-67L"/>
-                        <outlet property="forgetPasswordButton" destination="yZy-8k-ojZ" id="kPt-yC-xCW"/>
-                        <outlet property="loginButton" destination="YC1-4I-awM" id="SPk-wb-dKp"/>
-                        <outlet property="loginTextField" destination="17e-2L-7Ss" id="hN2-hS-zxH"/>
-                        <outlet property="loginViaFacebook" destination="1H0-EK-ckF" id="DYL-Qb-GQ6"/>
-                        <outlet property="passwordTextField" destination="Y0N-p0-zHE" id="LjG-Iz-JBL"/>
-                        <outlet property="vKLogoImage" destination="xnz-eV-PkV" id="IbQ-AN-J5S"/>
+                        <outlet property="webView" destination="9Iv-MQ-XOz" id="bmy-QG-3rL"/>
                         <segue destination="1NP-iu-clE" kind="presentation" identifier="toGreenSegue" modalPresentationStyle="fullScreen" id="Gvs-VB-YTd"/>
                     </connections>
                 </viewController>
@@ -206,7 +212,6 @@
                     <navigationItem key="navigationItem" id="qkN-iu-Ljg"/>
                     <connections>
                         <outlet property="authorizationButton" destination="vNW-Cf-SJN" id="W6z-hE-aGz"/>
-                        <outlet property="fBLogo" destination="uD8-BJ-feJ" id="Kkg-pv-zFC"/>
                         <outlet property="forgotPasswordButton" destination="sCx-oZ-ybX" id="zhi-UL-hBk"/>
                         <outlet property="loginTextField" destination="iKl-Ym-YhX" id="ipH-iD-toR"/>
                         <outlet property="passwordTextField" destination="9AZ-rX-KhS" id="5E5-q4-t4P"/>

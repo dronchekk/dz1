@@ -125,13 +125,20 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="facebookLogoImage" destination="pId-b2-k1v" id="iWq-KV-Sfy"/>
+                        <outlet property="forgetPasswordButton" destination="yZy-8k-ojZ" id="vF0-67-ZBg"/>
+                        <outlet property="loginButton" destination="YC1-4I-awM" id="1ci-im-fM5"/>
+                        <outlet property="loginTextField" destination="17e-2L-7Ss" id="ROT-p5-NMx"/>
+                        <outlet property="loginViaFacebook" destination="1H0-EK-ckF" id="ns7-uH-emW"/>
+                        <outlet property="passwordTextField" destination="Y0N-p0-zHE" id="Qzo-Qn-xcp"/>
+                        <outlet property="vKLogoImage" destination="xnz-eV-PkV" id="ooY-1n-L9H"/>
                         <outlet property="webView" destination="9Iv-MQ-XOz" id="bmy-QG-3rL"/>
                         <segue destination="1NP-iu-clE" kind="presentation" identifier="toGreenSegue" modalPresentationStyle="fullScreen" id="Gvs-VB-YTd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-425" y="73"/>
+            <point key="canvasLocation" x="-426.08695652173918" y="72.991071428571431"/>
         </scene>
         <!--Facebookauthorization View Controller-->
         <scene sceneID="TdK-YL-x62">

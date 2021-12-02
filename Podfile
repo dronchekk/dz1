@@ -7,6 +7,7 @@ target 'Dz1Storyboar Rad' do
 	pod 'Alamofire', '~> 4.8'
 	pod 'SwiftyJSON', '~> 4.0'
 	pod 'Kingfisher', '~> 7.0'
+	pod 'RealmSwift'
   # Pods for Dz1Storyboar Rad
 
 end

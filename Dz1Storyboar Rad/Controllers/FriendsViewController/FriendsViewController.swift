@@ -8,6 +8,8 @@
 import UIKit
 import Kingfisher
 import SwiftyJSON
+import RealmSwift
+
 
 class FriendsViewController: UIViewController {
 

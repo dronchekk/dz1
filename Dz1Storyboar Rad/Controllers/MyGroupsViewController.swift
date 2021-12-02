@@ -8,6 +8,7 @@
 import UIKit
 import SwiftyJSON
 import Kingfisher
+import RealmSwift
 
 class MyGroupsViewController: UIViewController {
 

@@ -6,33 +6,51 @@
 //
 
 import Foundation
+import RealmSwift
+import Realm
 
-class FriendItems: Codable {
-    var first_name: String
-    var last_name: String
+@objcMembers class FriendItems: Object, Codable {
+    dynamic var first_name: String = ""
+     dynamic var last_name: String = ""
 //    var screen_name: String
 //    var is_closed: Bool
 //    var type: String
 //    var is_admin: Bool
 //    var is_member: Bool
 //    var is_advertiser: Bool
-    var photo_50: String?
+     dynamic var photo_50: String? = ""
 //    var photo_100: String?
 //    var photo_200: String?
 
-    enum CodingKeys: String, CodingKey {
-        case first_name = "first_name"
-        case last_name = "last_name"
+    required init(from decoder: Decoder) throws
+        {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            first_name = try container.decode(String.self, forKey: .first_name)
+            last_name = try container.decode(String.self, forKey: .last_name)
+            photo_50 = try container.decode(String.self, forKey: .photo_50)
+            super.init()
+        }
+
+    required override init()
+     {
+         super.init()
+     }
+
+
+//    enum CodingKeys: String, CodingKey {
+//        case first_name = "first_name"
+//        case last_name = "last_name"
 //        case screen_name = "screen_name"
 //        case is_closed = "is_closed"
 //        case type = "type"
 //        case is_admin = "is_admin"
 //        case is_member = "is_member"
 //        case is_advertiser = "is_advertiser"
-        case photo_50 = "photo_50"
+//        case photo_50 = "photo_50"
 //        case photo_100 = "photo_100"
 //        case photo_200 = "photo_200"
-    }
+//    }
 
     public convenience init?(json: [String: Any]?){
           guard let json = json else {

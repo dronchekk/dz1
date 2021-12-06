@@ -14,8 +14,9 @@ class MyGroupsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
 
+    let realmManagerGroups = RealmManagerGroups()
     var dataSource: [GroupItems] = []
-    let url = URL(string: "http://api.vk.com/method/groups.get?extended=1&access_token=\(Session.instance.token)&v=5.131")
+//    let url = URL(string: "http://api.vk.com/method/groups.get?extended=1&access_token=\(Session.instance.token)&v=5.131")
     let reuseIdentifierCustom = "reuseIdentifierCustom"
 //    let fromAllGroupsToMyGroupsSegue = "fromAllGroupsToMyGroups"
 //    var myGroupsArray = [Group]()
@@ -37,53 +38,56 @@ class MyGroupsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        makeRequest()
+//        makeRequest()
         configureTableView()
 //        fillMyGroupsArray()
 //        tableView.register(UINib(nibName: "CustomTableViewCell", bundle: nil), forCellReuseIdentifier: reuseIdentifierCustom)
+        dataSource = realmManagerGroups.getGroups()
+        tableView.reloadData()
     }
 
-    func makeRequest() {
-
-            let task = URLSession.shared.dataTask(with: url!) { [weak self] data, response, error in
-                guard let data = data else { return }
-                let dic = self?.convertToDictionary(data: data)
-                guard let itemsData = (dic?["response"] as? [String: Any])?["items"] as? [[String: Any]] else {return}
-                var groups: [GroupItems] = []
-                for item in itemsData {
-                    guard let model = GroupItems(json: item)
-                    else {
-                        continue
-                    }
-                    groups.append(model)
-                }
-                self?.dataSource = groups
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else {return}
-                    self.tableView.reloadData()
-                }
-//                do {
-//                    let groups = try JSONDecoder().decode([Items].self, from: data)
-//                    self?.dataSource = groups
-//                    DispatchQueue.main.async {
-//                        self?.tableView.reloadData()
+//    func makeRequest() {
+//
+//            let task = URLSession.shared.dataTask(with: url!) { [weak self] data, response, error in
+//                guard let data = data else { return }
+//                let dic = self?.convertToDictionary(data: data)
+//                guard let itemsData = (dic?["response"] as? [String: Any])?["items"] as? [[String: Any]] else {return}
+//                var groups: [GroupItems] = []
+//                for item in itemsData {
+//                    guard let model = GroupItems(json: item)
+//                    else {
+//                        continue
 //                    }
-//                } catch(let error) {
-
-//                    print(error)
+//                    groups.append(model)
 //                }
-            }
-            task.resume()
-        }
+//                self?.dataSource = groups
+//                DispatchQueue.main.async { [weak self] in
+//                    guard let self = self else {return}
+//                    self.realmManagerGroups.save(data: Array(groups))
+//                    self.tableView.reloadData()
+//                }
+////                do {
+////                    let groups = try JSONDecoder().decode([Items].self, from: data)
+////                    self?.dataSource = groups
+////                    DispatchQueue.main.async {
+////                        self?.tableView.reloadData()
+////                    }
+////                } catch(let error) {
+//
+////                    print(error)
+////                }
+//            }
+//            task.resume()
+//        }
 
-    func convertToDictionary(data: Data) -> [String: Any]? {
-        do {
-                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-            } catch {
-                print(error.localizedDescription)
-            }
-        return nil
-    }
+//    func convertToDictionary(data: Data) -> [String: Any]? {
+//        do {
+//                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+//            } catch {
+//                print(error.localizedDescription)
+//            }
+//        return nil
+//    }
 
     func configureTableView() {
         tableView.delegate = self

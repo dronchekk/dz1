@@ -17,8 +17,10 @@ class FriendsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
 
+
+    let realmManagerFriends = RealmManagerFriends()
     var dataSource: [FriendItems] = []
-    let url = URL(string: "http://api.vk.com/method/friends.get?fields=first_name,photo_50&access_token=\(Session.instance.token)&v=5.131")
+//    let url = URL(string: "http://api.vk.com/method/friends.get?fields=first_name,photo_50&access_token=\(Session.instance.token)&v=5.131")
     let reuseIdentifierCustom = "reuseIdentifierCustom"
     let fromFriendsToGallerySegue = "fromFriendsToGallery"
 //    var friendsArray = [Friend]()
@@ -59,7 +61,7 @@ class FriendsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        makeRequest()
+//        makeRequest()
         configureTableView()
 //        fillFriendsArray()
 //        formArrayLetter()
@@ -68,6 +70,8 @@ class FriendsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
 //        searchBar.delegate = self
+        dataSource = realmManagerFriends.getFriends()
+        tableView.reloadData()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -79,37 +83,38 @@ class FriendsViewController: UIViewController {
         }
     }
 
-    func makeRequest() {
-
-            let task = URLSession.shared.dataTask(with: url!) { [weak self] data, response, error in
-                guard let data = data else { return }
-                let dic = self?.convertToDictionary(data: data)
-                guard let itemsData = (dic?["response"] as? [String: Any])?["items"] as? [[String: Any]] else {return}
-                var friends: [FriendItems] = []
-                for item in itemsData {
-                    guard let model = FriendItems(json: item)
-                    else {
-                        continue
-                    }
-                    friends.append(model)
-                }
-                self?.dataSource = friends
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else {return}
-                    self.tableView.reloadData()
-                }
-            }
-            task.resume()
-        }
-
-    func convertToDictionary(data: Data) -> [String: Any]? {
-        do {
-                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-            } catch {
-                print(error.localizedDescription)
-            }
-        return nil
-    }
+//    func makeRequest() {
+//
+//            let task = URLSession.shared.dataTask(with: url!) { [weak self] data, response, error in
+//                guard let data = data else { return }
+//                let dic = self?.convertToDictionary(data: data)
+//                guard let itemsData = (dic?["response"] as? [String: Any])?["items"] as? [[String: Any]] else {return}
+//                var friends: [FriendItems] = []
+//                for item in itemsData {
+//                    guard let model = FriendItems(json: item)
+//                    else {
+//                        continue
+//                    }
+//                    friends.append(model)
+//                }
+//                self?.dataSource = friends
+//                DispatchQueue.main.async { [weak self] in
+//                    guard let self = self else {return}
+//                    self.realmManagerFriends.save(data: Array(friends))
+//                    self.tableView.reloadData()
+//                }
+//            }
+//            task.resume()
+//        }
+//
+//    func convertToDictionary(data: Data) -> [String: Any]? {
+//        do {
+//                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+//            } catch {
+//                print(error.localizedDescription)
+//            }
+//        return nil
+//    }
 
     func configureTableView() {
         tableView.delegate = self
@@ -129,7 +134,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: UITableViewCell.self), for: indexPath) as! UITableViewCell
         let friends = dataSource[indexPath.row]
-        cell.textLabel?.text = friends.first_name + friends.last_name
+        cell.textLabel?.text = friends.first_name + " " + friends.last_name
         let imageUrl = URL(string: friends.photo_50!)
         cell.imageView?.kf.setImage(with: imageUrl, placeholder: nil)
         return cell

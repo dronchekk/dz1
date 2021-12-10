@@ -17,9 +17,9 @@ class FriendsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
 
-
+    var token: NotificationToken?
     let realmManagerFriends = RealmManagerFriends()
-    var dataSource: [FriendItems] = []
+    var dataSource: Results<FriendItems>?
 //    let url = URL(string: "http://api.vk.com/method/friends.get?fields=first_name,photo_50&access_token=\(Session.instance.token)&v=5.131")
     let reuseIdentifierCustom = "reuseIdentifierCustom"
     let fromFriendsToGallerySegue = "fromFriendsToGallery"
@@ -70,17 +70,52 @@ class FriendsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
 //        searchBar.delegate = self
-        dataSource = realmManagerFriends.getFriends()
-        tableView.reloadData()
+            matchRealm()
+        //tableView.reloadData()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == fromFriendsToGallerySegue,
            // let sourceVC = segue.source as? FriendsViewController,
             let destinationVC = segue.destination as? GalleryViewController,
-            let friend = sender as? Friend {
-            destinationVC.photos = friend.photos
+            let friend = sender as? FriendItems {
+           // destinationVC.photos = friend.photos
         }
+    }
+
+    func matchRealm() {
+        let realm = try! Realm()
+        dataSource = realm.objects(FriendItems.self)
+        token = dataSource?.observe { [weak self] changes in
+            switch changes {
+            case  let .update(results, deletions, insertions, modifications):
+                self?.tableView.beginUpdates()
+                self?.tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) }, with: .fade)
+                self?.tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) }, with: .fade)
+                self?.tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) }, with: .fade)
+                self?.tableView.endUpdates()
+                print("UPDATED")
+
+                print(self?.dataSource?.count)
+            case .initial:
+                self?.tableView.reloadData()
+                print("Initial")
+            case.error:
+                print("Error")
+            }
+        }
+    }
+
+
+    @IBAction func addFriend(_ sender: Any) {
+        let realm = try! Realm()
+        realm .beginWrite()
+        let friend = FriendItems()
+        friend.first_name = "Bob"
+        friend.last_name = "Cat"
+        //friend.photo_50 = ""
+        realm.add(friend)
+        try! realm.commitWrite()
     }
 
 //    func makeRequest() {
@@ -128,15 +163,15 @@ class FriendsViewController: UIViewController {
 
 extension FriendsViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataSource.count
+        return dataSource?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: UITableViewCell.self), for: indexPath) as! UITableViewCell
-        let friends = dataSource[indexPath.row]
-        cell.textLabel?.text = friends.first_name + " " + friends.last_name
-        let imageUrl = URL(string: friends.photo_50!)
-        cell.imageView?.kf.setImage(with: imageUrl, placeholder: nil)
+        let friends = dataSource?[indexPath.row]
+        cell.textLabel?.text = friends?.first_name ?? "" + " " + friends!.last_name
+       // let imageUrl = URL(string: friends?.photo_50! ?? "")
+        //cell.imageView?.kf.setImage(with: imageUrl, placeholder: nil)
         return cell
     }
 //    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

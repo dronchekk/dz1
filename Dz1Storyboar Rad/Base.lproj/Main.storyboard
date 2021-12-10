@@ -315,6 +315,15 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="51"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lid-mr-SVw">
+                                <rect key="frame" x="347" y="98" width="67" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Button"/>
+                                <connections>
+                                    <action selector="addFriend:" destination="ETe-Im-SkR" eventType="touchUpInside" id="CoE-K8-H1J"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="EzX-h0-088"/>
                         <color key="backgroundColor" red="0.2755973249" green="0.37001037199999998" blue="0.57351401420000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>

@@ -13,9 +13,9 @@ import RealmSwift
 class MyGroupsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-
+    var token: NotificationToken?
     let realmManagerGroups = RealmManagerGroups()
-    var dataSource: [GroupItems] = []
+    var dataSource: Results<GroupItems>?
 //    let url = URL(string: "http://api.vk.com/method/groups.get?extended=1&access_token=\(Session.instance.token)&v=5.131")
     let reuseIdentifierCustom = "reuseIdentifierCustom"
 //    let fromAllGroupsToMyGroupsSegue = "fromAllGroupsToMyGroups"
@@ -31,10 +31,42 @@ class MyGroupsViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        tableView.reloadData()
-
+//        tableView.reloadData()
     }
 
+    func matchRealm() {
+        let realm = try! Realm()
+        dataSource = realm.objects(GroupItems.self)
+        token = dataSource?.observe { [weak self] changes in
+            switch changes {
+            case  let .update(results, deletions, insertions, modifications):
+                self?.tableView.beginUpdates()
+                self?.tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) }, with: .fade)
+                self?.tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) }, with: .fade)
+                self?.tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) }, with: .fade)
+                self?.tableView.endUpdates()
+                print("UPDATED")
+
+                print(self?.dataSource?.count)
+            case .initial:
+                self?.tableView.reloadData()
+                print("Initial")
+            case.error:
+                print("Error")
+            }
+        }
+    }
+
+    @IBAction func addGroup(_ sender: Any) {
+        let realm = try! Realm()
+        realm .beginWrite()
+        let group = GroupItems()
+        group.screen_name = "newGroup"
+        group.name = "354"
+        //friend.photo_50 = ""
+        realm.add(group)
+        try! realm.commitWrite()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,8 +74,9 @@ class MyGroupsViewController: UIViewController {
         configureTableView()
 //        fillMyGroupsArray()
 //        tableView.register(UINib(nibName: "CustomTableViewCell", bundle: nil), forCellReuseIdentifier: reuseIdentifierCustom)
-        dataSource = realmManagerGroups.getGroups()
+//        dataSource = realmManagerGroups.getGroups()
         tableView.reloadData()
+        matchRealm()
     }
 
 //    func makeRequest() {
@@ -126,15 +159,15 @@ class MyGroupsViewController: UIViewController {
 
 extension MyGroupsViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataSource.count
+        return dataSource?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: UITableViewCell.self), for: indexPath) as! UITableViewCell
-        let group = dataSource[indexPath.row]
-        cell.textLabel?.text = group.name
-        let imageUrl = URL(string: group.photo_50!)
-        cell.imageView?.kf.setImage(with: imageUrl, placeholder: nil)
+        let group = dataSource?[indexPath.row]
+        cell.textLabel?.text = group?.name
+//        let imageUrl = URL(string: group.photo_50!)
+//        cell.imageView?.kf.setImage(with: imageUrl, placeholder: nil)
         return cell
     }
 //    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

@@ -8,6 +8,11 @@ target 'Dz1Storyboar Rad' do
 	pod 'SwiftyJSON', '~> 4.0'
 	pod 'Kingfisher', '~> 7.0'
 	pod 'RealmSwift'
+	pod 'Firebase/Analytics'
+	pod 'Firebase/Auth'
+	pod 'Firebase/Firestore'
+	pod 'Firebase/Storage'
+	pod 'Firebase/Database'
   # Pods for Dz1Storyboar Rad
 
 end

@@ -18,7 +18,7 @@ class MyGroupsViewController: UIViewController {
     var dataSource: Results<GroupItems>?
 //    let url = URL(string: "http://api.vk.com/method/groups.get?extended=1&access_token=\(Session.instance.token)&v=5.131")
     let reuseIdentifierCustom = "reuseIdentifierCustom"
-//    let fromAllGroupsToMyGroupsSegue = "fromAllGroupsToMyGroups"
+    let fromAllGroupsToMyGroupsSegue = "fromAllGroupsToMyGroups"
 //    var myGroupsArray = [Group]()
 
 
@@ -133,8 +133,8 @@ class MyGroupsViewController: UIViewController {
 //            myGroupsArray.contains { sourceGroup in
 //            sourceGroup.title == group.title
 //        }
-//
-//    }
+
+    }
 
 
 
@@ -143,17 +143,17 @@ class MyGroupsViewController: UIViewController {
 //           let sourceVC = segue.source as? AllGroupsViewController,
 //           let selectedGroup = sourceVC.selectedGroup as? Group
 //        {
-//            if isItemAlreadyInArray(group: selectedGroup){return }
+////            if isItemAlreadyInArray(group: selectedGroup){return }
 //            self.myGroupsArray.append(selectedGroup)
 //            tableView.reloadData()
 //
 //        }
 //    }
-
-
-
-
-}
+//
+//
+//
+//
+//}
 
 
 

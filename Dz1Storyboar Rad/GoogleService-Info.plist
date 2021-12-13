@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>574690167885-5bs2s83m52h6j8ur4c5ero6nc2va05ei.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.574690167885-5bs2s83m52h6j8ur4c5ero6nc2va05ei</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCQG2ag1LMMJZSouyl3sgi_exNdCdTrvic</string>
+	<key>GCM_SENDER_ID</key>
+	<string>574690167885</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>study.Dz1Storyboar-Rad</string>
+	<key>PROJECT_ID</key>
+	<string>gbdzvkclient</string>
+	<key>STORAGE_BUCKET</key>
+	<string>gbdzvkclient.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:574690167885:ios:d3123ff14319206bd2e004</string>
+</dict>
+</plist>

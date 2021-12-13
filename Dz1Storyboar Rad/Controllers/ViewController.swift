@@ -5,9 +5,11 @@
 //  Created by Andrey rachitsky on 08.10.2021.
 //
 
+import Foundation
 import UIKit
 import WebKit
 import Alamofire
+import FirebaseAuth
 
 class ViewController: UIViewController, WKNavigationDelegate {
 
@@ -96,13 +98,22 @@ class ViewController: UIViewController, WKNavigationDelegate {
                   let password = passwordTextField.text
             else {return}
 
-            if login == "1",
-               password == "1" {
+            if login != "",
+               password != "" {
                 print("login success")
+                loginUser = login
                 loginTextField.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
                 passwordTextField.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
                 let session = Session.instance
                 session.userlogin = loginTextField.text ?? ""
+                Auth.auth().createUser(withEmail: login, password: password) { result, error in
+                    if let error = error {
+                        print("Error")
+                    } else {
+
+                        print("Sucess")
+                    }
+                }
                 performSegue(withIdentifier: "toGreenSegue", sender: nil)
             }
             else {

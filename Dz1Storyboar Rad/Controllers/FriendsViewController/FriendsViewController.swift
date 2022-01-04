@@ -20,7 +20,7 @@ class FriendsViewController: UIViewController {
     var token: NotificationToken?
     let realmManagerFriends = RealmManagerFriends()
     var dataSource: Results<FriendItems>?
-//    let url = URL(string: "http://api.vk.com/method/friends.get?fields=first_name,photo_50&access_token=\(Session.instance.token)&v=5.131")
+    let url = URL(string: "http://api.vk.com/method/friends.get?fields=first_name,photo_50&access_token=\(Session.instance.token)&v=5.131")
     let reuseIdentifierCustom = "reuseIdentifierCustom"
     let fromFriendsToGallerySegue = "fromFriendsToGallery"
 //    var friendsArray = [Friend]()

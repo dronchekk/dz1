@@ -63,7 +63,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
         gradientLayer.zPosition = 0
         self.view.layer.addSublayer(gradientLayer)
 
-        webView.layer.zPosition = 0
+        webView.layer.zPosition = 1
         loginTextField.layer.zPosition = 1
         passwordTextField.layer.zPosition = 1
         loginButton.layer.zPosition = 1

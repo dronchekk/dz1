@@ -23,6 +23,7 @@ class FriendsViewController: UIViewController {
     let url = URL(string: "http://api.vk.com/method/friends.get?fields=first_name,photo_50&access_token=\(Session.instance.token)&v=5.131")
     let reuseIdentifierCustom = "reuseIdentifierCustom"
     let fromFriendsToGallerySegue = "fromFriendsToGallery"
+
 //    var friendsArray = [Friend]()
 //    var savedFriendsArray = [Friend]()
 //    var arrayLetter = [String]()
@@ -72,6 +73,7 @@ class FriendsViewController: UIViewController {
 //        searchBar.delegate = self
             matchRealm()
         //tableView.reloadData()
+    
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -95,7 +97,7 @@ class FriendsViewController: UIViewController {
                 self?.tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) }, with: .fade)
                 self?.tableView.endUpdates()
                 print("UPDATED")
-
+                
                 print(self?.dataSource?.count)
             case .initial:
                 self?.tableView.reloadData()

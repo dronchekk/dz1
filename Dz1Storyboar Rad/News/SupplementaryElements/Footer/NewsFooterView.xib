@@ -17,11 +17,10 @@
                     <rect key="frame" x="0.0" y="0.0" width="553" height="166"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="WHt-jZ-0N9">
-                            <rect key="frame" x="16" y="12" width="186" height="45"/>
+                            <rect key="frame" x="16" y="12" width="186" height="25"/>
                             <constraints>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="45" id="NPF-Cj-Jzs"/>
+                                <constraint firstAttribute="height" constant="25" id="NPF-Cj-Jzs"/>
                                 <constraint firstAttribute="width" constant="186" id="ucU-NN-iXf"/>
-                                <constraint firstAttribute="height" constant="45" id="zsM-Pd-vMt"/>
                             </constraints>
                         </stackView>
                     </subviews>

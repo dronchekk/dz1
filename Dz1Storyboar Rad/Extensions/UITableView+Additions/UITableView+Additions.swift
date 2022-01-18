@@ -8,6 +8,7 @@
 import UIKit
 
 public extension UITableView {
+    
     func register(nib: AnyClass, bundleEndpoint: String? = nil) {
         register(UINib(nibName: String(describing: nib), bundle: nil),
            forCellReuseIdentifier: String(describing: nib))

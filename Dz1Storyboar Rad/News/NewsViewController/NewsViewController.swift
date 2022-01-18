@@ -11,13 +11,28 @@ class NewsViewController: UIViewController {
 
     @IBOutlet private var tableView: UITableView!
 
+    var dataSource = NewsDataSource()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        makeRequest()
     }
 }
 
 private extension NewsViewController {
+
+    func makeRequest() {
+        PostService.shared.obtainAllNews { [weak self] (result) in
+            switch result {
+            case .success(_):
+                break
+            case let .failure(error):
+                break
+            }
+        }
+    }
+
 
     func setupView() {
         setupTableView()
@@ -50,18 +65,18 @@ extension NewsViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 69.0
+        return 49.0
     }
 }
 
 extension NewsViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return dataSource.sectionModelList.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return dataSource.sectionModelList[section].itemTypeList.count
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -71,7 +86,23 @@ extension NewsViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return tableView.dequeueReusableCell(withIdentifier: String(describing: UITableViewCell.self), for: indexPath)
+
+        guard let section = dataSource.sectionModelList.itemAt(index: indexPath.section),
+              let itemType = section.itemTypeList.itemAt(index: indexPath.item)
+        else {
+            return tableView.dequeueReusableCell(withIdentifier: String(describing: UITableViewCell.self), for: indexPath)
+        }
+        switch itemType {
+        case .text:
+            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: NewsTextTableViewCell.self), for: indexPath) as! NewsImageTableViewCell
+
+            return cell
+        case let .image(count: count):
+            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: NewsImageTableViewCell.self), for: indexPath) as! NewsImageTableViewCell
+            
+
+            return cell
+        }
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

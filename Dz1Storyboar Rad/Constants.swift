@@ -7,7 +7,8 @@
 
 import Foundation
 
-
+public typealias AnyCompletion = (Result<Any, Error>)->()
+public typealias VoidCompletion = (Result<Void, Error>)->()
 let galleryCollectionCellNibName = "GalleryCollectionCell"
 let cellHeight = 70
 var loginUser = ""

@@ -17,6 +17,7 @@ class GalleryViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(Session.instance.token)
         collectionView.delegate  = self
         collectionView.dataSource = self
         collectionView.register(UINib(nibName: galleryCollectionCellNibName, bundle: nil), forCellWithReuseIdentifier: reuseIdentifierGalleryCell)

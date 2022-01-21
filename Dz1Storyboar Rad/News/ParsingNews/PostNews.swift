@@ -16,21 +16,21 @@ public struct EmptyError: Error {
     public init(){}
 }
 
-class PostService {
+class PostService: Operation {
 
     static var shared = {
         return PostService()
     }()
 
-    func obtainAllNews(completion: @escaping VoidCompletion) {
-        guard let url = URL(string: "http://api.vk.com/method/newsfeed.get?fields=items,profiles,groups&access_token=\(Session.instance.token)&v=5.131")
+    func obtainAllNews(completion: @escaping AnyCompletion) {
+        guard let url = URL(string: "https://api.vk.com/method/newsfeed.get?filters=post&start_from=next_from&count=5&access_token=\(Session.instance.token)&v=5.131")
         else {
             DispatchQueue.main.async {
                 completion(.failure(EmptyError()))
             }
             return
         }
-        let serviceGroup = DispatchGroup()
+        let dataSource = NewsDataSource()
 
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data else {
@@ -39,44 +39,94 @@ class PostService {
                 }
                 return
             }
+            let serviceGroup = DispatchGroup()
             let dic = Self.convertToDictionary(data: data)
-            if let items = dic?["items"]{
-                let itemsQueue = DispatchQueue.global(qos: .background)
+            if let items = (dic?["response"] as? [String: Any])?["items"] as? [[String: Any]] {
                 serviceGroup.enter()
-                itemsQueue.async {
-
-
+                DispatchQueue.global(qos: .background).async {
+                    var itemsModel: [PostItem] = []
+                    for data in items {
+                        var jsonData: Data?
+                        do {
+                            jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
+                        } catch {
+                            continue
+                        }
+                        guard jsonData != nil else {continue}
+                        var model: PostItem?
+                        do {
+                            model = try JSONDecoder().decode(PostItem.self, from: jsonData!)
+                        } catch {
+                            continue
+                        }
+                        if model != nil {
+                            itemsModel.append(model!)
+                        }
+                    }
+                    dataSource.itemsList = itemsModel
                     serviceGroup.leave()
                 }
             }
-            if let profiles = dic?["profiles"]{
-                let itemsQueue = DispatchQueue.global(qos: .background)
+            if let profiles = (dic?["response"] as? [String: Any])?["profiles"] as? [[String: Any]] {
                 serviceGroup.enter()
-                itemsQueue.async {
-
-
+                DispatchQueue.global(qos: .background).async {
+                    var itemsModel: [DetailProfiles] = []
+                    for data in profiles {
+                        var jsonData: Data?
+                        do {
+                            jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
+                        } catch {
+                            continue
+                        }
+                        guard jsonData != nil else {continue}
+                        var model: DetailProfiles?
+                        do {
+                            model = try JSONDecoder().decode(DetailProfiles.self, from: jsonData!)
+                        } catch  {
+                            continue
+                        }
+                        if model != nil {
+                            itemsModel.append(model!)
+                        }
+                    }
+                    dataSource.profilesList = itemsModel
                     serviceGroup.leave()
                 }
             }
-            if let group = dic?["group"]{
-                let itemsQueue = DispatchQueue.global(qos: .background)
+
+            if let groups = (dic?["response"] as? [String: Any])?["groups"] as? [[String: Any]] {
                 serviceGroup.enter()
-                itemsQueue.async {
-
-
+                DispatchQueue.global(qos: .background).async {
+                    var itemsModel: [DetailGroup] = []
+                    for data in groups {
+                        var jsonData: Data?
+                        do {
+                            jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
+                        } catch {
+                            continue
+                        }
+                        guard jsonData != nil else {continue}
+                        var model: DetailGroup?
+                        do {
+                            model = try JSONDecoder().decode(DetailGroup.self, from: jsonData!)
+                        } catch  {
+                            continue
+                        }
+                        if model != nil {
+                            itemsModel.append(model!)
+                        }
+                    }
+                    dataSource.groupList = itemsModel
                     serviceGroup.leave()
                 }
             }
+            serviceGroup.notify(queue: DispatchQueue.main, work: DispatchWorkItem(block: {
+                dataSource.convertToSectionModel()
+                completion(.success(dataSource))
+            }))
         }
-        task.resume()
 
-        serviceGroup.notify(queue: DispatchQueue.main, work: DispatchWorkItem(block: { [weak self] in
-            guard let self = self else {
-                completion(.failure(EmptyError()))
-                return
-            }
-            completion(.success(()))
-        }))
+        task.resume()
     }
 
     static func convertToDictionary(data: Data) -> [String: Any]? {
@@ -87,9 +137,6 @@ class PostService {
             }
         return nil
     }
-
-
-//    let url = URL(string: "http://api.vk.com/method/newsfeed.get?fields=items,profiles,groups&access_token=\(Session.instance.token)&v=5.131")
 
 
     /*

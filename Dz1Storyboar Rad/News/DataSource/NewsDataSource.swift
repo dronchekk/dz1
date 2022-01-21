@@ -20,8 +20,21 @@ struct NewsSectionModel {
 
 class NewsDataSource {
 
+    var groupList: [DetailGroup] = []
+    var profilesList: [DetailProfiles] = []
+    var itemsList: [PostItem] = []
+
     var sectionModelList: [NewsSectionModel] = []
 
     // MARK: Индекс последней успешно загруженной новости/секции
     var lastLoadSectionIndex: Int = .zero
+
+    func convertToSectionModel() {
+        for item in itemsList {
+            let idGroup = abs(item.sourceId)
+            guard let group = groupList.filter ({$0.id == idGroup}).first else {continue}
+            let section = NewsSectionModel(groupImageUrl: group.photoUrl, groupName: group.name, groupSubname: VKFormatter.convertDateToString(timeIntervalSince1970: item.date), itemTypeList: [.text], itemText: item.text, itemImageUrlList: nil)
+            sectionModelList.append(section)
+        }
+    }
 }

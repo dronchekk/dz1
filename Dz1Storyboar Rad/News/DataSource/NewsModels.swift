@@ -5,25 +5,87 @@
 //  Created by Andrey Rachitskiy on 17.01.2022.
 //
 
-import Foundation
+import UIKit
 import RealmSwift
 import Realm
 
-@objcMembers class PostItems: Object, Codable {
-    dynamic var text: String = ""
-    dynamic var comments: Int = 0
-    dynamic var likes: Int = 0
-    dynamic var reposts: Int = 0
+struct PostItem: Codable {
+
+    let sourceId: Int
+    let date: Double
+
+    let text: String
+    let attachments: [Attachment]?
+
+    let comments: CommentModel
+    let likes: LikeModel
+    let reposts: Int
+
+    enum CodingKeys: String, CodingKey {
+
+        case sourceId = "source_id"
+        case date
+
+        case text
+        case attachments
+
+        case likes
+        case comments
+        case reposts
+    }
+}
+
+struct Attachment: Codable {
+
+    let type: String?
+    let photo: PhotoNews?
+}
+
+struct LikeModel: Codable {
+
+    let count: Int
+}
+
+struct CommentModel: Codable {
+
+    let count: Int
+}
+
+struct PhotoNews: Codable {
+
+    let id: Int?
+    let imageList: [ImageNews]?
     
+
+    enum CodingKeys: String, CodingKey {
+
+        case id
+        case imageList = "sizes"
+    }
+}
+
+struct ImageNews: Codable {
+
+    let type: String?
+    let url: String?
+
+}
+
+@objcMembers class DetailGroup: Object, Codable {
+
+    dynamic var id: Int = 0
+    dynamic var name: String = ""
+    dynamic var photoUrl: String = ""
+    dynamic var type: String = ""
 
     required init(from decoder: Decoder) throws
     {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        text = try container.decode(String.self, forKey: .text)
-        comments = try container.decode(Int.self, forKey: .comments)
-        likes = try container.decode(Int.self, forKey: .likes)
-        reposts = try container.decode(Int.self, forKey: .reposts)
+        id = try container.decode(Int.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        photoUrl = try container.decode(String.self, forKey: .photoUrl)
+        type = try container.decode(String.self, forKey: .type)
 
         super.init()
     }
@@ -33,37 +95,33 @@ import Realm
         super.init()
     }
 
-    public convenience init?(json: [String: Any]?){
+    public convenience init?(json: [String: Any]?) {
         guard let json = json else {
             return nil
         }
         self.init()
 
-        self.text = json["text"] as? String ?? "Error text"
-        self.comments = json["comments"] as? Int ?? 0
-        self.likes = json["likes"] as? Int ?? 0
-        self.reposts = json["reposts"] as? Int ?? 0
+        self.id = json["id"] as? Int ?? 0
+        self.name = json["name"] as? String ?? "Error name"
+        self.photoUrl = json["photo_50"] as? String ?? "Error photoUrl"
+        self.type = json["type"] as? String ?? "Error type"
 
     }
 
-    public init (text: String? = nil,
-                 comments: Int? = nil,
-                 likes: Int? = nil,
-                 reposts: Int? = nil
-                 )
+    public init (id: Int? = nil,
+                 name: String? = nil,
+                 photoUrl: String? = nil,
+                 type: String? = nil)
     {
-        self.text = text ?? "Error name"
-        self.comments = comments ?? 0
-        self.likes = likes ?? 0
-        self.reposts = reposts ?? 0
+        self.id = id ?? 0
+        self.name = name ?? "Error name"
+        self.photoUrl = name ?? "Error photoUrl"
+        self.type = name ?? "Error type"
     }
 }
 
-//@objcMembers class PostGroups: Object, Codable {
-//    //??
-//}
+@objcMembers class DetailProfiles: Object, Codable {
 
-@objcMembers class PostProfiles: Object, Codable {
     dynamic var screen_name: String = ""
     dynamic var photo_50: String = ""
 
@@ -81,7 +139,7 @@ import Realm
         super.init()
     }
 
-    public convenience init?(json: [String: Any]?){
+    public convenience init?(json: [String: Any]?) {
         guard let json = json else {
             return nil
         }

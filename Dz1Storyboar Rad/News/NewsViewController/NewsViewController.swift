@@ -25,11 +25,13 @@ private extension NewsViewController {
     func makeRequest() {
         PostService.shared.obtainAllNews { [weak self] (result) in
             switch result {
-            case .success(_):
-                break
+            case let .success(dataSource):
+                guard let source = dataSource as? NewsDataSource else {break}
+                self?.dataSource = source
             case let .failure(error):
                 break
             }
+            self?.tableView.reloadData()
         }
     }
 

@@ -13,6 +13,6 @@ class NewsTextTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        titleLabel.numberOfLines = 0
     }
 }

@@ -8,4 +8,5 @@
 import UIKit
 
 class NewsImageTableViewCell: UITableViewCell {
+
 }

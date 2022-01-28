@@ -28,10 +28,12 @@ private extension NewsViewController {
             case let .success(dataSource):
                 guard let source = dataSource as? NewsDataSource else {break}
                 self?.dataSource = source
-            case let .failure(error):
+            case .failure(_):
                 break
             }
-            self?.tableView.reloadData()
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
+            }
         }
     }
 
@@ -83,7 +85,11 @@ extension NewsViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: NewsHeaderView.self))
-
+        as? NewsHeaderView
+        let section = dataSource.sectionModelList.itemAt(index: section)
+        header?.titleLabel.text = section?.groupName
+        header?.avatarImageView.imageUrl = section?.groupImageUrl
+        header?.subtitleLabel.text = section?.groupSubname
         return header
     }
 
@@ -96,7 +102,8 @@ extension NewsViewController: UITableViewDataSource {
         }
         switch itemType {
         case .text:
-            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: NewsTextTableViewCell.self), for: indexPath) as! NewsImageTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: NewsTextTableViewCell.self), for: indexPath) as! NewsTextTableViewCell
+            cell.titleLabel.text = section.itemText
 
             return cell
         case let .image(count: count):
@@ -109,7 +116,9 @@ extension NewsViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: NewsFooterView.self))
-
+        as? NewsFooterView
+        let section = dataSource.sectionModelList.itemAt(index: section)
+//        footer?.button1.setTitle(<#T##title: String?##String?#>, for: <#T##UIControl.State#>)
         return footer
     }
 }

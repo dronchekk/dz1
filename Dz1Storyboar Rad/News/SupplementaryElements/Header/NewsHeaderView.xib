@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,13 +17,14 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="86O-eb-THU">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="152"/>
                     <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Vve-3Q-Hie">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ekt-4B-SiZ" customClass="LoadImageView" customModule="Dz1Storyboar_Rad" customModuleProvider="target">
                             <rect key="frame" x="16" y="51" width="50" height="50"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="50" id="5Ek-p6-1cp"/>
-                                <constraint firstAttribute="width" constant="50" id="eET-3Q-VOG"/>
+                                <constraint firstAttribute="width" constant="50" id="8j1-Lu-txW"/>
+                                <constraint firstAttribute="height" constant="50" id="f6l-Yh-FjL"/>
                             </constraints>
-                        </imageView>
+                        </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cdY-SG-0gH">
                             <rect key="frame" x="74" y="12" width="324" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -38,16 +40,14 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="cdY-SG-0gH" firstAttribute="leading" secondItem="Vve-3Q-Hie" secondAttribute="trailing" constant="8" id="CRM-39-RDY"/>
+                        <constraint firstItem="cdY-SG-0gH" firstAttribute="leading" secondItem="ekt-4B-SiZ" secondAttribute="trailing" constant="8" id="0gk-ry-m3G"/>
+                        <constraint firstItem="ekt-4B-SiZ" firstAttribute="leading" secondItem="86O-eb-THU" secondAttribute="leading" constant="16" id="9VZ-xM-jsa"/>
+                        <constraint firstItem="zFT-F1-WkV" firstAttribute="leading" secondItem="ekt-4B-SiZ" secondAttribute="trailing" constant="8" id="B6H-Jf-XJs"/>
                         <constraint firstItem="cdY-SG-0gH" firstAttribute="top" secondItem="86O-eb-THU" secondAttribute="top" constant="12" id="GtF-si-Ag1"/>
                         <constraint firstItem="zFT-F1-WkV" firstAttribute="top" secondItem="cdY-SG-0gH" secondAttribute="bottom" constant="4" id="KAP-wX-fcN"/>
+                        <constraint firstItem="ekt-4B-SiZ" firstAttribute="centerY" secondItem="86O-eb-THU" secondAttribute="centerY" id="SQ5-sU-X9Y"/>
                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="zFT-F1-WkV" secondAttribute="bottom" constant="12" id="VUY-an-rJa"/>
-                        <constraint firstItem="zFT-F1-WkV" firstAttribute="leading" secondItem="Vve-3Q-Hie" secondAttribute="trailing" constant="8" id="ahB-zu-IqB"/>
                         <constraint firstAttribute="trailing" secondItem="cdY-SG-0gH" secondAttribute="trailing" constant="16" id="aiy-uF-sjP"/>
-                        <constraint firstItem="Vve-3Q-Hie" firstAttribute="centerY" secondItem="86O-eb-THU" secondAttribute="centerY" id="bpl-n3-NuW"/>
-                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Vve-3Q-Hie" secondAttribute="bottom" constant="12" id="dta-Gm-FbQ"/>
-                        <constraint firstItem="Vve-3Q-Hie" firstAttribute="top" relation="greaterThanOrEqual" secondItem="86O-eb-THU" secondAttribute="top" constant="12" id="g9O-O8-iE6"/>
-                        <constraint firstItem="Vve-3Q-Hie" firstAttribute="leading" secondItem="86O-eb-THU" secondAttribute="leading" constant="16" id="lPs-MC-xjU"/>
                     </constraints>
                 </view>
             </subviews>
@@ -60,11 +60,16 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="avatarImageView" destination="Vve-3Q-Hie" id="xHZ-UM-jn3"/>
+                <outlet property="avatarImageView" destination="ekt-4B-SiZ" id="kbw-aV-y8h"/>
                 <outlet property="subtitleLabel" destination="zFT-F1-WkV" id="Nh7-T5-OMF"/>
                 <outlet property="titleLabel" destination="cdY-SG-0gH" id="zjd-Tu-VH8"/>
             </connections>
             <point key="canvasLocation" x="146.37681159420291" y="-81.026785714285708"/>
         </view>
     </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

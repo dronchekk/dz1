@@ -11,7 +11,7 @@ import UIKit
 
 class NewsHeaderView: UITableViewHeaderFooterView {
 
-    @IBOutlet weak var avatarImageView: UIImageView!
+    @IBOutlet weak var avatarImageView: LoadImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
 

@@ -10,6 +10,8 @@ import Alamofire
 
 class LoadImageView: UIView {
 
+    let cacheManager: CacheFileManager = .init()
+
     var imageView: UIImageView = {
         let image = UIImageView(frame: .zero)
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -17,7 +19,34 @@ class LoadImageView: UIView {
         return image
     }()
 
-    var imageUrl: String?
+    var imageUrl: String? {
+        didSet {
+            guard let urltext = imageUrl else {
+                imageView.image = UIImage(named: "")
+                return
+            }
+            if let imageData = cacheManager.getFile(url: urltext) {
+                imageView.image = UIImage(data: imageData)
+            } else if let url = URL.init(string: urltext) {
+                URLSession.shared.dataTask(with: url) { (data, response, error) in
+                    if let data = data {
+                        DispatchQueue.main.async { [weak self] in
+                            guard let image = UIImage.init(data: data), let id = image.pngData() else { return }
+
+                            self?.imageView.image = UIImage.init(data: data)
+                            let _ = try? self?.cacheManager.save(fileName: urltext, data: id)
+                        }
+                    } else {
+                        DispatchQueue.main.async { [weak self] in
+                            self?.imageView.image = UIImage(named: "")
+                        }
+                    }
+                }.resume()
+            }
+        }
+    }
+
+
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,9 +63,7 @@ class LoadImageView: UIView {
             return nil
         }
         super.init(frame: .zero)
-
-        // TODO: Продумать механизм работы с кэшированными данными
-
+        self.imageUrl = text
     }
 }
 

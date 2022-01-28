@@ -11,64 +11,131 @@ import Realm
 
 struct PostItem: Codable {
 
-    let sourceId: Int
-    let date: Double
+    var sourceId: Int
+    var date: Double
 
-    let text: String
-    let attachments: [Attachment]?
+    var text: String
+    var attachments: [Attachment]?
 
-    let comments: CommentModel
-    let likes: LikeModel
-    let reposts: Int
+    var comments: CommentModel
+    var likes: LikeModel
+    var reposts: Int
 
     enum CodingKeys: String, CodingKey {
 
         case sourceId = "source_id"
-        case date
+        case date = "date"
 
-        case text
-        case attachments
+        case text = "text"
+        case attachments = "attachments"
 
-        case likes
-        case comments
-        case reposts
+        case likes = "likes"
+        case comments = "comments"
+        case reposts = "reposts"
+    }
+
+    init(json:[String:Any]) {
+        self.init()
+        self.date = json["date"] as? Double ?? .zero
+        self.sourceId = json["source_id"] as? Int ?? .zero
+        self.text = json["text"] as? String ?? ""
+        if let list = json["attachments"] as? [[String:Any]] {
+            self.attachments = []
+            for item in list {
+                self.attachments?.append(Attachment(json: item))
+            }
+        }
+        if let item = json["likes"] as? [String:Any] {
+            self.likes = LikeModel(json: item)
+        }
+        if let item = json["comments"] as? [String:Any] {
+            self.comments = CommentModel(json: item)
+        }
+        self.reposts = (json["reposts"] as? [String:Any])?["count"] as? Int ?? .zero
+    }
+    init() {
+        self.date = .zero
+        self.text = ""
+        self.sourceId = .zero
+        self.attachments = []
+        self.likes = LikeModel.init(json: [:])
+        self.comments = CommentModel.init(json: [:])
+        self.reposts = .zero
     }
 }
 
 struct Attachment: Codable {
 
-    let type: String?
-    let photo: PhotoNews?
+    var type: String?
+    var photo: PhotoNews?
+
+    init (json: [String:Any]) {
+
+        self.type = json["type"] as? String
+        if let item = json["photo"] as? [String:Any] {
+            self.photo = PhotoNews(json: item)
+        }
+    }
 }
 
 struct LikeModel: Codable {
 
-    let count: Int
+    var count: Int
+
+    init (json: [String:Any]) {
+        self.count = json["count"] as? Int ?? .zero
+    }
 }
 
 struct CommentModel: Codable {
 
-    let count: Int
+    var count: Int
+
+    init (json: [String:Any]) {
+        self.count = json["count"] as? Int ?? .zero
+    }
 }
 
 struct PhotoNews: Codable {
 
-    let id: Int?
-    let imageList: [ImageNews]?
+    var id: Int?
+    var imageList: [ImageNews]?
     
 
     enum CodingKeys: String, CodingKey {
 
-        case id
+        case id = "id"
         case imageList = "sizes"
+    }
+
+    init (json: [String:Any]) {
+
+        self.id = json["id"] as? Int
+        if let list = json["sizes"] as? [[String:Any]] {
+            self.imageList = []
+            for item in list {
+                self.imageList?.append(ImageNews.init(json: item))
+            }
+        }
     }
 }
 
 struct ImageNews: Codable {
 
-    let type: String?
-    let url: String?
+    var type: String?
+    var url: String?
 
+    enum CodingKeys: String, CodingKey {
+
+        case type = "type"
+        case url = "url"
+    }
+
+    init(json:[String:Any]) {
+
+        self.type = json["type"] as? String ?? ""
+        self.url = json["url"] as? String ?? ""
+    }
 }
 
 @objcMembers class DetailGroup: Object, Codable {

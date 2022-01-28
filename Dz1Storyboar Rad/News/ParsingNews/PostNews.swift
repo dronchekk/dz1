@@ -46,22 +46,7 @@ class PostService: Operation {
                 DispatchQueue.global(qos: .background).async {
                     var itemsModel: [PostItem] = []
                     for data in items {
-                        var jsonData: Data?
-                        do {
-                            jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
-                        } catch {
-                            continue
-                        }
-                        guard jsonData != nil else {continue}
-                        var model: PostItem?
-                        do {
-                            model = try JSONDecoder().decode(PostItem.self, from: jsonData!)
-                        } catch {
-                            continue
-                        }
-                        if model != nil {
-                            itemsModel.append(model!)
-                        }
+                        itemsModel.append(PostItem.init(json: data))
                     }
                     dataSource.itemsList = itemsModel
                     serviceGroup.leave()
@@ -99,22 +84,8 @@ class PostService: Operation {
                 DispatchQueue.global(qos: .background).async {
                     var itemsModel: [DetailGroup] = []
                     for data in groups {
-                        var jsonData: Data?
-                        do {
-                            jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
-                        } catch {
-                            continue
-                        }
-                        guard jsonData != nil else {continue}
-                        var model: DetailGroup?
-                        do {
-                            model = try JSONDecoder().decode(DetailGroup.self, from: jsonData!)
-                        } catch  {
-                            continue
-                        }
-                        if model != nil {
-                            itemsModel.append(model!)
-                        }
+                        guard let model = DetailGroup.init(json: data) else {continue}
+                        itemsModel.append(model)
                     }
                     dataSource.groupList = itemsModel
                     serviceGroup.leave()

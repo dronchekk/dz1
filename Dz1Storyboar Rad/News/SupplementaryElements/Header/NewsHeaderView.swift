@@ -25,6 +25,7 @@ class NewsHeaderView: UITableViewHeaderFooterView {
 private extension NewsHeaderView {
 
     func setupViews() {
+        avatarImageView.imageView.layer.cornerRadius = avatarImageView.bounds.height / 2.0
         setupTitleLabel()
         setupSubtitleLabel()
     }

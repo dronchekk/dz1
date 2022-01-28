@@ -13,6 +13,13 @@ public extension UITableView {
         register(UINib(nibName: String(describing: nib), bundle: nil),
            forCellReuseIdentifier: String(describing: nib))
      }
+
+    func reloadData(_ completion: (()->Void)?) {
+        self.reloadData()
+        DispatchQueue.main.async {
+            completion?()
+        }
+    }
 }
 
 

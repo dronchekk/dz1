@@ -26,13 +26,13 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cdY-SG-0gH">
-                            <rect key="frame" x="74" y="12" width="324" height="20.5"/>
+                            <rect key="frame" x="74" y="55.5" width="324" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zFT-F1-WkV">
-                            <rect key="frame" x="74" y="36.5" width="42" height="20.5"/>
+                            <rect key="frame" x="74" y="80" width="42" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -43,10 +43,11 @@
                         <constraint firstItem="cdY-SG-0gH" firstAttribute="leading" secondItem="ekt-4B-SiZ" secondAttribute="trailing" constant="8" id="0gk-ry-m3G"/>
                         <constraint firstItem="ekt-4B-SiZ" firstAttribute="leading" secondItem="86O-eb-THU" secondAttribute="leading" constant="16" id="9VZ-xM-jsa"/>
                         <constraint firstItem="zFT-F1-WkV" firstAttribute="leading" secondItem="ekt-4B-SiZ" secondAttribute="trailing" constant="8" id="B6H-Jf-XJs"/>
-                        <constraint firstItem="cdY-SG-0gH" firstAttribute="top" secondItem="86O-eb-THU" secondAttribute="top" constant="12" id="GtF-si-Ag1"/>
+                        <constraint firstItem="cdY-SG-0gH" firstAttribute="top" relation="greaterThanOrEqual" secondItem="86O-eb-THU" secondAttribute="top" constant="12" id="GtF-si-Ag1"/>
                         <constraint firstItem="zFT-F1-WkV" firstAttribute="top" secondItem="cdY-SG-0gH" secondAttribute="bottom" constant="4" id="KAP-wX-fcN"/>
                         <constraint firstItem="ekt-4B-SiZ" firstAttribute="centerY" secondItem="86O-eb-THU" secondAttribute="centerY" id="SQ5-sU-X9Y"/>
                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="zFT-F1-WkV" secondAttribute="bottom" constant="12" id="VUY-an-rJa"/>
+                        <constraint firstItem="cdY-SG-0gH" firstAttribute="bottom" secondItem="86O-eb-THU" secondAttribute="centerY" id="Xzk-sV-bU0"/>
                         <constraint firstAttribute="trailing" secondItem="cdY-SG-0gH" secondAttribute="trailing" constant="16" id="aiy-uF-sjP"/>
                     </constraints>
                 </view>

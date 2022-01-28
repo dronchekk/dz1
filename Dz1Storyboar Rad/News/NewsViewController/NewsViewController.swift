@@ -16,7 +16,9 @@ class NewsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        makeRequest()
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            self?.makeRequest()
+        }
     }
 }
 
@@ -24,14 +26,16 @@ private extension NewsViewController {
 
     func makeRequest() {
         PostService.shared.obtainAllNews { [weak self] (result) in
+            var newDataSource: NewsDataSource = .init()
             switch result {
             case let .success(dataSource):
                 guard let source = dataSource as? NewsDataSource else {break}
-                self?.dataSource = source
+                newDataSource = source
             case .failure(_):
                 break
             }
             DispatchQueue.main.async { [weak self] in
+                self?.dataSource = newDataSource
                 self?.tableView.reloadData()
             }
         }
@@ -63,6 +67,10 @@ private extension NewsViewController {
 }
 
 extension NewsViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 74.0
+    }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100.0

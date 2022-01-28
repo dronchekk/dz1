@@ -18,12 +18,14 @@ public struct EmptyError: Error {
 
 class PostService: Operation {
 
+    private let itemCount: Int = 25
+
     static var shared = {
         return PostService()
     }()
 
     func obtainAllNews(completion: @escaping AnyCompletion) {
-        guard let url = URL(string: "https://api.vk.com/method/newsfeed.get?filters=post&start_from=next_from&count=5&access_token=\(Session.instance.token)&v=5.131")
+        guard let url = URL(string: "https://api.vk.com/method/newsfeed.get?filters=post&start_from=next_from&count=\(itemCount)&access_token=\(Session.instance.token)&v=5.131")
         else {
             DispatchQueue.main.async {
                 completion(.failure(EmptyError()))
@@ -91,7 +93,7 @@ class PostService: Operation {
                     serviceGroup.leave()
                 }
             }
-            serviceGroup.notify(queue: DispatchQueue.main, work: DispatchWorkItem(block: {
+            serviceGroup.notify(queue: .global(qos: .background), work: DispatchWorkItem(block: {
                 dataSource.convertToSectionModel()
                 completion(.success(dataSource))
             }))

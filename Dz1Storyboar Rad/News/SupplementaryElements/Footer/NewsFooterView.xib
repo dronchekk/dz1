@@ -17,7 +17,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="553" height="166"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="WHt-jZ-0N9">
-                            <rect key="frame" x="16" y="12" width="186" height="25"/>
+                            <rect key="frame" x="16" y="2" width="186" height="25"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="25" id="NPF-Cj-Jzs"/>
                                 <constraint firstAttribute="width" constant="186" id="ucU-NN-iXf"/>
@@ -28,7 +28,7 @@
                     <constraints>
                         <constraint firstItem="WHt-jZ-0N9" firstAttribute="leading" secondItem="c0Y-Hb-nh6" secondAttribute="leading" constant="16" id="C0T-pX-UXD"/>
                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="WHt-jZ-0N9" secondAttribute="bottom" constant="12" id="lUk-P1-UOH"/>
-                        <constraint firstItem="WHt-jZ-0N9" firstAttribute="top" secondItem="c0Y-Hb-nh6" secondAttribute="top" constant="12" id="w9i-hp-EGJ"/>
+                        <constraint firstItem="WHt-jZ-0N9" firstAttribute="top" secondItem="c0Y-Hb-nh6" secondAttribute="top" constant="2" id="w9i-hp-EGJ"/>
                     </constraints>
                 </view>
             </subviews>

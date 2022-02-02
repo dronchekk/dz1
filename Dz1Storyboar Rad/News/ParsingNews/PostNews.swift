@@ -17,22 +17,19 @@ public struct EmptyError: Error {
 }
 
 class PostService: Operation {
-
-    private let itemCount: Int = 25
-
+    
     static var shared = {
         return PostService()
     }()
 
-    func obtainAllNews(completion: @escaping AnyCompletion) {
-        guard let url = URL(string: "https://api.vk.com/method/newsfeed.get?filters=post&start_from=next_from&count=\(itemCount)&access_token=\(Session.instance.token)&v=5.131")
+    func obtainAllNews(dataSource: NewsDataSource, completion: @escaping AnyCompletion) {
+        guard let url = URL(string: "https://api.vk.com/method/newsfeed.get?filters=post&start_from=\(dataSource.nextNewsId)&count=\(NewsDataSource.loadingItemCount)&access_token=\(Session.instance.token)&v=5.131")
         else {
             DispatchQueue.main.async {
                 completion(.failure(EmptyError()))
             }
             return
         }
-        let dataSource = NewsDataSource()
 
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data else {
@@ -50,7 +47,7 @@ class PostService: Operation {
                     for data in items {
                         itemsModel.append(PostItem.init(json: data))
                     }
-                    dataSource.itemsList = itemsModel
+                    dataSource.itemsList.append(contentsOf: itemsModel)
                     serviceGroup.leave()
                 }
             }
@@ -76,7 +73,7 @@ class PostService: Operation {
                             itemsModel.append(model!)
                         }
                     }
-                    dataSource.profilesList = itemsModel
+                    dataSource.profiles.formUnion(itemsModel)
                     serviceGroup.leave()
                 }
             }
@@ -89,10 +86,14 @@ class PostService: Operation {
                         guard let model = DetailGroup.init(json: data) else {continue}
                         itemsModel.append(model)
                     }
-                    dataSource.groupList = itemsModel
+                    dataSource.groups.formUnion(itemsModel)
                     serviceGroup.leave()
                 }
             }
+
+            let lastNewsId: String? = (dic?["response"] as? [String: Any])?["next_from"] as? String
+            dataSource.nextNewsId = lastNewsId ?? NewsDataSource.emptyDataKey
+
             serviceGroup.notify(queue: .global(qos: .background), work: DispatchWorkItem(block: {
                 dataSource.convertToSectionModel()
                 completion(.success(dataSource))

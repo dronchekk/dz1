@@ -13,43 +13,61 @@ class NewsViewController: UIViewController {
 
     var dataSource = NewsDataSource()
 
+    private var refreshControl: UIRefreshControl = {
+        return UIRefreshControl(frame: .zero)
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            self?.makeRequest()
-        }
+        prepareData()
     }
 }
 
 private extension NewsViewController {
 
+    func prepareData() {
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            self?.makeRequest()
+        }
+    }
+
     func makeRequest() {
-        PostService.shared.obtainAllNews { [weak self] (result) in
-            var newDataSource: NewsDataSource = .init()
-            switch result {
-            case let .success(dataSource):
-                guard let source = dataSource as? NewsDataSource else {break}
-                newDataSource = source
-            case .failure(_):
-                break
-            }
+        dataSource.isLoading = true
+        PostService.shared.obtainAllNews(dataSource: dataSource) { (_) in
             DispatchQueue.main.async { [weak self] in
-                self?.dataSource = newDataSource
-                self?.tableView.reloadData()
+                guard let self = self else { return }
+                self.dataSource.isLoading = false
+//                self.tableView.reloadData()
+
+                guard let newSections = self.dataSource.addSectionIndexs else { return }
+                self.tableView.insertSections(newSections, with: .fade)
+                self.refreshControl.endRefreshing()
             }
         }
     }
 
 
     func setupView() {
+        setupRefreshControl()
         setupTableView()
     }
 
+    func setupRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+    }
+
+    @objc
+    func handleRefreshControl() {
+        dataSource.nextNewsId = NewsDataSource.emptyDataKey
+        prepareData()
+    }
+
     func setupTableView() {
-        tableView.estimatedRowHeight = 100.0
+        tableView.estimatedRowHeight = 50.0
         tableView.estimatedSectionHeaderHeight = 74.0
-        tableView.estimatedSectionFooterHeight = 50.0
+        tableView.estimatedSectionFooterHeight = 40.0
+        tableView.refreshControl = refreshControl
 
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: String(describing: UITableViewCell.self))
         tableView.register(nib: NewsTextTableViewCell.self)
@@ -63,6 +81,7 @@ private extension NewsViewController {
 
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.prefetchDataSource = self
     }
 }
 
@@ -72,12 +91,12 @@ extension NewsViewController: UITableViewDelegate {
         return 74.0
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100.0
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50.0
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 49.0
+        return 40.0
     }
 }
 
@@ -112,13 +131,23 @@ extension NewsViewController: UITableViewDataSource {
         case .text:
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: NewsTextTableViewCell.self), for: indexPath) as! NewsTextTableViewCell
             cell.titleLabel.text = section.itemText
+            cell.titleLabel.numberOfLines = section.isCollapsed ? 10 : 0
+            cell.moreButton.isSelected = !section.isCollapsed
+            cell.delegate = self
 
             return cell
+
         case let .image(count: count):
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: NewsImageTableViewCell.self), for: indexPath) as! NewsImageTableViewCell
             
 
             return cell
+        }
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let textCell = cell as? NewsTextTableViewCell {
+            textCell.moreButton.isHidden = cell.bounds.height < 200.0
         }
     }
 
@@ -134,7 +163,43 @@ extension NewsViewController: UITableViewDataSource {
 extension NewsViewController: UITableViewDataSourcePrefetching {
 
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        guard let maxSection = indexPaths.map({ $0.section }).max(),
+              maxSection > tableView.numberOfSections - 4,
+              !dataSource.isLoading
+        else { return }
+        prepareData()
+        
+        // Проверяем,является ли эта секция одной из трех ближайших к концу
+//        if maxSection > tableView.numberOfSections - 4,
+//            // Убеждаемся, что мы уже не в процессе загрузки данных
+//            !isLoading {
+//            // Начинаем загрузку данных и меняем флаг isLoading
+//            isLoading = true
+//            // Обратите внимание, что сетевой сервис должен уметь обрабатывать входящий параметр nextFrom
+//            networkService.newsRequest(startFrom: nextFrom)
+//            // и в качестве результата возвращать не только свежераспарсенные новости, но и nextFrom для будущего запроса
+//            { [weak self] (news, nextFrom) in
+//                guard let self = self else { return }
+//                // Прикрепляем новости к cуществующим новостям
+//                let indexSet = IndexSet(integersIn: self.news.count ..< self.news.count + news.count)
+//                self.news.append(contentsOf: news)
+//                // Обновляем таблицу
+//                self.tableView.insertSections(indexSet, with: .automatic)
+//                // Выключаем статус isLoading
+//                self.isLoading = false
+//            }
+//        }
+    }
+}
 
+extension NewsViewController: NewsTextCellDelegate {
+
+    func didTouchMoreButtonFor(cell: NewsTextTableViewCell, button: UIButton) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        dataSource.sectionModelList[indexPath.section].isCollapsed = !button.isSelected
+        tableView.beginUpdates()
+        tableView.reloadSections(IndexSet([indexPath.section]), with: .fade)
+        tableView.endUpdates()
     }
 }
 

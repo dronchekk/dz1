@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Foundation
 
 class AllGroupsViewController: UIViewController {
 
@@ -15,16 +16,16 @@ class AllGroupsViewController: UIViewController {
     let reuseIdentifierCustom = "reuseIdentifierCustom"
     var allGroupsArray = [Group]()
     let fromAllGroupsToMyGroupsSegue = "fromAllGroupsToMyGroups"
-
     var selectedGroup: Group?
 
     func fillAllGroupsArray() {
         let group1 = Group(title: "Youtube", avatar: UIImage(named: "Allgroups1")!)
         let group2 = Group(title: "TikTok", avatar: UIImage(named: "Allgroups2")!)
         allGroupsArray.append(group1)
-        allGroupsArray.append(group2)
+        allGroupsArray .append(group2)
 
     }
+
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -34,12 +35,13 @@ class AllGroupsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-fillAllGroupsArray()
+        fillAllGroupsArray()
         tableView.register(UINib(nibName: "CustomTableViewCell", bundle: nil), forCellReuseIdentifier: reuseIdentifierCustom)
         tableView.delegate = self
         tableView.dataSource = self
-    }
 
+
+    }
 
 }
 

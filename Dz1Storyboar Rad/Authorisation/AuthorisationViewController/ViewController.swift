@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 import WebKit
 import Alamofire
-import FirebaseAuth
 import SwiftUI
 
 class ViewController: UIViewController, WKNavigationDelegate {
@@ -99,14 +98,6 @@ class ViewController: UIViewController, WKNavigationDelegate {
             passwordTextField.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
             let session = Session.instance
             session.userlogin = loginTextField.text ?? ""
-            Auth.auth().createUser(withEmail: login, password: password) { result, error in
-                if let error = error {
-                    print("Error: \(error)")
-                } else {
-
-                    print("Sucess")
-                }
-            }
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.performSegue(withIdentifier: "toGreenSegue", sender: nil)

@@ -9,6 +9,10 @@ import Foundation
 import RealmSwift
 import Realm
 
+
+struct ResponseFriends: Codable {
+    let response: FriendItems
+}
 @objcMembers class FriendItems: Object, Codable {
     dynamic var first_name: String = ""
      dynamic var last_name: String = ""

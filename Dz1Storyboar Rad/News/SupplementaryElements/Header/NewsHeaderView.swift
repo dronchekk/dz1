@@ -33,14 +33,14 @@ private extension NewsHeaderView {
     func setupTitleLabel() {
         titleLabel.numberOfLines = 1
         titleLabel.text = "News"
-        titleLabel.textColor = .black
-        titleLabel.font = UIFont.systemFont(ofSize: 16.0)
+        titleLabel.textColor = .brandBlack
+        titleLabel.font = .brandTitle
     }
 
     func setupSubtitleLabel() {
         subtitleLabel.numberOfLines = 1
         subtitleLabel.text = "date"
         subtitleLabel.textColor = .gray.withAlphaComponent(0.75)
-        subtitleLabel.font = UIFont.systemFont(ofSize: 14.0)
+        subtitleLabel.font = .brandSubtitle
     }
 }

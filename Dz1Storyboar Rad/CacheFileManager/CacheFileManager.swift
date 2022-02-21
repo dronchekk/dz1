@@ -28,11 +28,7 @@ class CacheFileManager {
         if fileManager.fileExists(atPath: url.absoluteString) {
             throw FileError.fileAlreadyExists
         }
-//        do {
-//            try data.write(to: url)
-//        } catch {
-//            throw FileError.writtingFailed(error: error)
-//        }
+
         fileManager.createFile(atPath: url.path, contents: data, attributes: nil)
         return url
     }

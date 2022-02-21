@@ -47,7 +47,7 @@ private extension NewsTextTableViewCell {
         moreButton.setTitle("Show more", for: .normal)
         moreButton.setTitle("Show less", for: .selected)
         moreButton.setTitleColor(.blue, for: .normal)
-        moreButton.titleLabel?.font = UIFont.systemFont(ofSize: 12.0)
+        moreButton.titleLabel?.font = .brandButton
 
         moreButton.addTarget(self, action: #selector(didTouchMoreButton(_:)), for: .touchUpInside)
 

@@ -50,10 +50,10 @@ class CustomTableViewCell: UITableViewCell {
         super.awakeFromNib()
         likeView.delegate = self
         avatarImageView.layer.cornerRadius = CGFloat (cellHeight / 2 - 8)
-        avatarImageView.layer.borderColor = UIColor.black.cgColor
+        avatarImageView.layer.borderColor = UIColor.brandBlackC
         avatarImageView.layer.borderWidth = 1
         backView.layer.cornerRadius = CGFloat (cellHeight / 2 - 4)
-        backView.layer.shadowColor = UIColor.black.cgColor
+        backView.layer.shadowColor = UIColor.brandBlackC
         backView.layer.shadowOffset = CGSize(width: 4, height: 4)
         backView.layer.shadowRadius = 4
         backView .layer.shadowOpacity = 1

@@ -168,27 +168,6 @@ extension NewsViewController: UITableViewDataSourcePrefetching {
               !dataSource.isLoading
         else { return }
         prepareData()
-        
-        // Проверяем,является ли эта секция одной из трех ближайших к концу
-//        if maxSection > tableView.numberOfSections - 4,
-//            // Убеждаемся, что мы уже не в процессе загрузки данных
-//            !isLoading {
-//            // Начинаем загрузку данных и меняем флаг isLoading
-//            isLoading = true
-//            // Обратите внимание, что сетевой сервис должен уметь обрабатывать входящий параметр nextFrom
-//            networkService.newsRequest(startFrom: nextFrom)
-//            // и в качестве результата возвращать не только свежераспарсенные новости, но и nextFrom для будущего запроса
-//            { [weak self] (news, nextFrom) in
-//                guard let self = self else { return }
-//                // Прикрепляем новости к cуществующим новостям
-//                let indexSet = IndexSet(integersIn: self.news.count ..< self.news.count + news.count)
-//                self.news.append(contentsOf: news)
-//                // Обновляем таблицу
-//                self.tableView.insertSections(indexSet, with: .automatic)
-//                // Выключаем статус isLoading
-//                self.isLoading = false
-//            }
-//        }
     }
 }
 
@@ -202,4 +181,3 @@ extension NewsViewController: NewsTextCellDelegate {
         tableView.endUpdates()
     }
 }
-

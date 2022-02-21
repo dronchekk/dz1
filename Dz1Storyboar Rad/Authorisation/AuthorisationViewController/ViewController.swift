@@ -28,7 +28,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
     @IBOutlet weak var facebookLogoImage: UIImageView!
 
     func addShadow (view: UIView) {
-        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowColor = UIColor.brandBlackC
         view.layer.shadowOffset = CGSize(width: 10, height: 10)
         view.layer.shadowRadius = 10
         view.layer.shadowOpacity = 1
@@ -54,7 +54,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
         webView.load(request)
 
         let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.systemBlue.cgColor, UIColor.white.cgColor]
+        gradientLayer.colors = [UIColor.brandBlueC, UIColor.brandWhiteC]
         gradientLayer.locations = [0.5, 1]
         gradientLayer.startPoint = CGPoint.zero
         gradientLayer.endPoint = CGPoint(x: 0, y: 1)

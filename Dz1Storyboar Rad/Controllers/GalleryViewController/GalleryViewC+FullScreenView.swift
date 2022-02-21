@@ -15,7 +15,7 @@ extension GalleryViewController {
             fullScreenView = UIView(frame: self.view.safeAreaLayoutGuide.layoutFrame)
         }
 
-        fullScreenView!.backgroundColor = UIColor.black
+        fullScreenView!.backgroundColor = .brandBlack
         self.view.addSubview(fullScreenView!)
 
         let imageView = UIImageView(image: image)
@@ -29,7 +29,7 @@ extension GalleryViewController {
 
 
         let closeButton = UIButton(frame: CGRect(x: fullScreenView!.bounds.width - 40, y: 0, width: 40, height: 40))
-        closeButton.tintColor = UIColor.white
+        closeButton.tintColor = .brandWhite
         closeButton.addAction(UIAction(handler: { [weak self] _ in
             self?.fullScreenView!.removeFromSuperview()
         }), for: .touchUpInside)
